@@ -1,0 +1,81 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "shop": {
+      "projectType": "application",
+      "root": "apps/shop",
+      "sourceRoot": "apps/shop/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist/apps/shop",
+            "index": "apps/shop/src/index.html",
+            "browser": "apps/shop/src/main.ts",
+            "polyfills": ["zone.js"],
+            "tsConfig": "apps/shop/tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "apps/shop/public"
+              }
+            ],
+            "styles": ["apps/shop/src/styles.css"],
+            "server": "apps/shop/src/main.server.ts",
+            "ssr": {
+              "entry": "apps/shop/src/server.ts"
+            },
+            "outputMode": "server"
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kb",
+                  "maximumError": "8kb"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "shop:build:production"
+            },
+            "development": {
+              "buildTarget": "shop:build:development"
+            }
+          },
+          "defaultConfiguration": "development",
+          "options": {
+            "proxyConfig": "apps/shop/proxy.conf.json"
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "buildTarget": "shop:build"
+          }
+        }
+      }
+    }
+  }
+}
